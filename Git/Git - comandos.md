@@ -136,8 +136,8 @@ GIT_WORK_TREE=/home/residente/proyectos_dev/ptapoarequi/ptapoarequi git checkout
 **Despues dar permisos al archivo post-receive**  
 `chmod +x post-receive`  
 
-**Remove all cached files to ensure there are no .gitignore files being tracked**
-`git rm --cached -r .`
+**Remove all cached files to ensure there are no .gitignore files being tracked**  
+`git rm --cached -r .`  
 
-**Track the files that should be tracked**
-`git add .`
+**Track the files that should be tracked**  
+`git add .`  
