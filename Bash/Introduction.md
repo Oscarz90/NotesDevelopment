@@ -1,4 +1,4 @@
-#### Bash Scripting
+## Bash Scripting
 
 A Bash script is a plain text file which contains a series of commands.
 
