@@ -21,7 +21,7 @@ pi@raspberrypi:~ $ ./myscript.sh
 Hello World!
 ~~~
 
-myscript.sh
+**myscript.sh**
 ~~~bash
 #!/bin/bash
 
