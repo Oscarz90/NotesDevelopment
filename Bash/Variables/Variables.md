@@ -89,3 +89,72 @@ the number of seconds since the script was started: 0
 get a random number: 7175
 the current line number is: 13
 ~~~
+
+##### Quotes
+
+---
+When we enclose our content in quotes we are indicating to Bash that the contents should be considered as a single item. You may use single quotes ( ' ) or double quotes ( " ).
+
++ Single quotes will treat every character literally.
++ Double quotes will allow you to do substitution (that is include variables within the setting of the value).
+
+~~~bash
+pi@raspberrypi:~ $ myvar='Hello World'
+pi@raspberrypi:~ $ echo $myvar
+Hello World
+pi@raspberrypi:~ $ newvar="More $myvar"
+pi@raspberrypi:~ $ echo $newvar
+More Hello World
+pi@raspberrypi:~ $ newvar='More $myvar'
+pi@raspberrypi:~ $ echo $newvar
+More $myvar
+~~~
+
+##### Command Substitution
+
+---
+Command substitution allows us to take the output of a command or program (what would normally be printed to the screen) and save it as the value of a variable. To do this we place it within brackets, preceded by a $ sign.
+
+~~~bash
+pi@raspberrypi:~ $ myvar=$(ls /etc | wc -l)
+pi@raspberrypi:~ $ echo There are $myvar entries in the directory /etc
+There are 195 entries in the directory /etc
+~~~
+
+##### Exporting Variables
+
+---
+Scripts being run in their own process? This introduces a phenomenon known as scope which affects variables amongst other things. The idea is that variables are limited to the process they were created in. Normaly this isn't an issue but sometimes, for instance, a script may run another script as one of its commands. If we want the variable to be available to the second script then we need to export the variable.
+
+**script1.sh**
+~~~bash
+#!/bin/bash
+# demonstrate variable scope 1.
+var1=blah
+var2=foo
+# Let's verify their current value
+echo $0 :: var1 : $var1, var2 : $var2
+export var1
+./script2.sh
+# Let's see what they are now
+echo $0 :: var1 : $var1, var2 : $var2
+~~~
+
+**script2.sh**
+~~~bash
+#!/bin/bash
+# demonstrate variable scope 2
+# Let's verify their current value
+echo $0 :: var1 : $var1, var2 : $var2
+# Let's change their values
+var1=flop
+var2=bleh
+~~~
+
+**Terminal**
+~~~bash
+pi@raspberrypi:~ $ ./script1.sh
+./script1.sh :: var1 : blah, var2 : foo
+./script2.sh :: var1 : blah, var2 :
+./script1.sh :: var1 : blah, var2 : foo
+~~~
