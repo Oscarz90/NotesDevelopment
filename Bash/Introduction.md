@@ -74,3 +74,5 @@ Hello World!
 Formatting for the shebang was important (ie no spaces, must be on first line). There are many areas in Bash scripts where formatting is important. Typically it involves spaces and either the presence or absence of a space can be the difference between the command working or not. I'll point these out as we encounter them.
 
 The main reason for this is that Bash was originally developed as an interface for Users to interact with the system and later extended to have more powerful scripting capabilities. Many decisions regarding it's behaviour were made considering only the needs of the user and then scripting capabilities had to be worked in, later, around those decisions. People generally don't mind this however as Bash scripts are still an awesome tool for quickly and easily joining existing programs into more powerful solutions.
+
+[![asciicast](https://asciinema.org/a/pDY2pgR743Xzp7pYof1AO986k.png)](https://asciinema.org/a/pDY2pgR743Xzp7pYof1AO986k)
