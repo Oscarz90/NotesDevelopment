@@ -62,7 +62,7 @@
 
 ## [![Home](assets/icon/home.png)](#content)  Bigo
 
-## [![Home](assets/icon/home.png)](#content)  Test
+## Test
 
 
 ## [![Home](assets/icon/up.png )](#content)  Linked Lists {#linkedList}
