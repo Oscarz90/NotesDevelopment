@@ -292,7 +292,7 @@ Traversal algorithms are algorithms to traverse or visit nodes in a graph. The m
 
 _References_
 
-[10 Common Data Structures Explained with Videos + Exercises](https://medium.freecodecamp.org/10-common-data-structures-explained-with-videos-exercises-aaff6c06fb2b)
+[10 Common Data Structures Explained with Videos + Exercises](https://medium.freecodecamp.org/10-common-data-structures-explained-with-videos-exercises-aaff6c06fb2b)  
 [Programming Tutorials and Practice Problems](https://www.hackerearth.com/practice/)
 
 **[Back to top](#table-of-contents)**
