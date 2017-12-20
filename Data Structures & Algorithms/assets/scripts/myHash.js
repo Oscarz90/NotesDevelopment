@@ -44,6 +44,19 @@ class Hash{
 	print(){
 		this.storage.forEach(value=>{console.log(value)})
 	}
+
+  lookup(key){
+    var index = hash(key, this.storageLimit);
+    if (this.storage[index] === undefined) {
+      return undefined;
+    } else {
+      for (var i = 0; i < this.storage[index].length; i++) {
+        if (this.storage[index][i][0] === key) {
+          return this.storage[index][i][1];
+        }
+      }
+    }
+  }
 }
 
 const test= new Hash()

@@ -1,5 +1,0 @@
-Nomenclatura
----
-
-#### Nombrado de controles
-
