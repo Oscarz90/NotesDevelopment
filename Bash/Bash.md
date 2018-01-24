@@ -38,12 +38,23 @@
     * [Boolean Operations](#boolean-operations)
     * [Case Statements](#case-statements)
     * [If Statements Summary](#if-statements-summary)
-+ [Loops](loops)
-    * [While Loops](while-loops)
-    * [Until Loops](until-loops)
-    * [For Loops](for-loops)
-    * [Controlling Loops: Break and Continue](controlling-loops:-break-and-continue)
-    * [Select](select)
++ [Loops](#loops)
+    * [While Loops](#while-loops)
+    * [Until Loops](#until-loops)
+    * [For Loops](#for-loops)
+    * [Controlling Loops: Break and Continue](#controlling-loops:-break-and-continue)
+    * [Select](#select)
+    * [Loops Summary](#loops-summary)
++ [Functions](#functions)
+    * [Variable Scope](#variable-scope)
+    * [Overriding Commands](#overriding-commands)
+    * [Design](#design)
+    * [Functions Summary](#functions-summary)
++ [User Interface](#user-interface)
+    * [TPut](#tput)
+    * [Supplying Data](#supplying-data)
+    * [Presenting Data](#presenting-data)
+    * [Organising Your Code](#organising-your-code)
 
 ## Introduction
 
@@ -55,13 +66,13 @@ This page is mostly foundation information. It's kinda boring but essential stuf
 
 Think of a script for a play, or a movie, or a TV show. The script tells the actors what they should say and do. A script for a computer tells the computer what it should do or say. In the context of Bash scripts we are telling the Bash shell what it should do.
 
-A Bash script is a plain text file which contains a series of commands. These commands are a mixture of commands we would normally type ouselves on the command line (such as ls or cp for example) and commands we could type on the command line but generally wouldn't (you'll discover these over the next few pages). An important point to remember though is:
+A Bash script is a plain text file which contains a series of commands. These commands are a mixture of commands we would normally type ouselves on the command line (such as **ls** or **cp** for example) and commands we could type on the command line but generally wouldn't (you'll discover these over the next few pages). An important point to remember though is:
 
 **Anything you can run normally on the command line can be put into a script and it will do exactly the same thing. Similarly, anything you can put into a script can also be run normally on the command line and it will do exactly the same thing.**
 
 You don't need to change anything. Just type the commands as you would normally and they will behave as they would normally. It's just that instead of typing them at the command line we are now entering them into a plain text file. In this sense, if you know how to do stuff at the command line then you already know a fair bit in terms of Bash scripting.
 
-It is convention to give files that are Bash scripts an extension of **.sh** (_myscript.sh_ for example). As you would be aware, Linux is an extensionless system so a script doesn't necessarily have to have this characteristic in order to work.
+It is convention to give files that are Bash scripts an extension of **.sh** ( [myscript.sh](scripts/myscript.sh) for example). As you would be aware, Linux is an extensionless system so a script doesn't necessarily have to have this characteristic in order to work.
 
 **[Back to top](#table-of-contents)**
 
@@ -73,7 +84,7 @@ In the realm of Linux (and computers in general) we have the concept of programs
 
 **Essentially a process is a running instance of a program.**
 
-There could be several processes representing the same program running in memory at the same time. For example I could have two terminals open and be running the command cp in both of them. In this case there would be two cp processes currently existing on the system. Once they are finished running the system then destroys them and there are no longer any processes representing the program cp.
+There could be several processes representing the same program running in memory at the same time. For example I could have two terminals open and be running the command **cp** in both of them. In this case there would be two cp processes currently existing on the system. Once they are finished running the system then destroys them and there are no longer any processes representing the program cp.
 
 When we are at the terminal we have a Bash process running in order to give us the Bash shell. If we start a script running it doesn't actually run in that process but instead starts a new process to run inside. We'll demonstrate this in the next section on variables and it's implications should become clearer. For the most part you don't need to worry too much about this phenomenon however.
 
@@ -99,23 +110,24 @@ pi@raspberry:~$
 
 >The shorthand **755** is often used for scripts as it allows you **the owner to write or modify** the script and for **everyone to execute** the script.
 
-_**myscript.sh**_
+[myscript.sh](scripts/myscript.sh)
 ```
 #!/bin/bash
 # A sample Bash script, by Ryan
+
 echo Hello World!
 ```
 
 Let's break it down:
 
 + **Line 1** - Is what's referred to as the **shebang**. See below for what this is.
-+ **Line 2** - This is a comment. Anything after # is not executed. It is for our reference only.
++ **Line 2** - This is a comment. Anything after **#** is not executed. It is for our reference only.
 + **Line 4** - Is the command echo which will print a message to the screen. You can type this command yourself on the command line and it will behave exactly the same.
 The syntax highlighting is there only to make it easier to read and is not something you need to do in your own files (remember they are just plain text files).
 
 **Why the ./**
 
-You've possibly noticed that when we run a normal command (such as ls) we just type its name but when running the script above I put a ./ in front of it. **When you just type a name on the command line Bash tries to find it in a series of directories stored in a variable called $PATH**. We can see the current value of this variable using the command echo (you'll learn more about variables in the next section).
+You've possibly noticed that when we run a normal command (such as **ls**) we just type its name but when running the script above I put a ./ in front of it. **When you just type a name on the command line Bash tries to find it in a series of directories stored in a variable called $PATH**. We can see the current value of this variable using the command **echo** (you'll learn more about variables in the next section).
 
 **Terminal**
 ```
@@ -133,8 +145,8 @@ Bash only looks in those specific directories and doesn't consider sub directori
 This is done for a few different reasons.
 
 + It allows us **to have several different versions of a program** installed. We can control which one gets executed based on where it sits in our $PATH.
-+ It allows for convenience. As you saw above, the first directory for myself is a bin directory in my home directory. This allows me **to put my own scripts and programs there and then I can use them no matter where I am in the system by just typing their name**. I could even create a script with the same name as a program (to act as a wrapper) if I wanted slightly different behaviour.
-+ **It increases safety** - For example a malicious user could create a script called ls which actually deletes everything in your home directory. You wouldn't want to inadvertantly run that script. But as long as it's not in your $PATH that won't happen.
++ It allows for convenience. As you saw above, the first directory for myself is a **bin** directory in my home directory. This allows me **to put my own scripts and programs there and then I can use them no matter where I am in the system by just typing their name**. I could even create a script with the same name as a program (to act as a wrapper) if I wanted slightly different behaviour.
++ **It increases safety** - For example a malicious user could create a script called **ls** which actually deletes everything in your home directory. You wouldn't want to inadvertantly run that script. But as long as it's not in your $PATH that won't happen.
 
 If a program or script is not in one of the directories in your $PATH then you can run it by telling Bash where it should look to find it. You do so by including either **an absolute or relative path** in front of the program or script name. You'll remember that** dot ( . ) is actually a reference to your current directory**. Assuming this script is in my home directory I could also have run it by using an absolute path.
 
@@ -151,7 +163,7 @@ pi@raspberry:~$
 
 This is the first line of the script above. **The hash exclamation mark ( #! ) character sequence is referred to as the _Shebang_**. Following it is the path to the interpreter (or program) that should be used to run (or interpret) the rest of the lines in the text file. (For Bash scripts it will be the path to Bash, but there are many other types of scripts and they each have their own interpreter.)
 
-Formatting is important here. **The shebang must be on the very first line of the file** (line 2 won't do, even if the first line is blank). There must also be no spaces before the # or between the ! and the path to the interpreter.
+Formatting is important here. **The shebang must be on the very first line of the file** (line 2 won't do, even if the first line is blank). There must also be no spaces before the **#** or between the ! and the path to the interpreter.
 
 Whilst you could use a relative path for the interpreter, most of the time you are going to want to use an absolute path. You will probably be running the script from a variety of locations so absolute is the safest (and often shorter than a relative path too in this particular case).
 
@@ -168,6 +180,7 @@ pi@raspberry:~$
 
 Whilst this is safe it also involves unnecessary typing every time you want to run the script.
 
+**Best Practice**
 >Given the observations above it is best to always include the shebang **( #! )**. It is the most reliable and convenient approach.
 
 ### Formatting
@@ -214,11 +227,11 @@ Here are a few quick points on syntax. They will be elaborated on and demonstrat
 
 Command line arguments are commonly used and easy to work with so they are a good place to start.
 
-When we run a program on the command line you would be familiar with supplying arguments after it to control its behaviour. For instance we could run the command `ls -l /etc`. `-l` and `/etc` are both command line arguments to the command **ls**. We can do similar with our bash scripts. To do this we use the variables **$1** to represent the first command line argument, **$2** to represent the second command line argument and so on. These are automatically set by the system when we run our script so all we need to do is refer to them.
+When we run a program on the command line you would be familiar with supplying arguments after it to control its behaviour. For instance we could run the command **ls -l /etc**. **-l** and **/etc** are both command line arguments to the command **ls**. We can do similar with our bash scripts. To do this we use the variables **$1** to represent the first command line argument, **$2** to represent the second command line argument and so on. These are automatically set by the system when we run our script so all we need to do is refer to them.
 
 Let's look at an example.
 
-_**mycopy.sh**_
+[mycopy.sh](scripts/mycopy.sh)
 ```
 #!/bin/bash
 # A simple copy script
@@ -263,6 +276,7 @@ There are a few other variables that the system sets for you to use as well.
 **$RANDOM** - Returns a different random number each time is it referred to.
 **$LINENO** - Returns the current line number in the Bash script.
 
+**Tip**
 >If you type the command **env** on the command line you will see a listing of other variables which you may also refer to.
 
 Some of these variables may seem useful to you now. Others may not. As we progress to more complex scripts in later sections you will see examples of how they can be useful.
@@ -283,7 +297,7 @@ Variable names may be uppercase or lowercase or a mixture of both but Bash is a 
 
 Here is a simple example to illustrate their usage.
 
-_**simplevariables.sh**_
+[simplevariables.sh](scripts/simplevariables.sh)
 ```
 #!/bin/bash
 # A simple variable example
@@ -304,10 +318,10 @@ ls $sampledir
 Let's break it down:
 
 + **Lines 4 and 6** - set the value of the two variables myvariable and anothervar.
-+ **Line 8** - run the command echo to check the variables have been set as intended.
-+ **Line 9** - run the command echo this time with no arguments. This is a good way to get a blank line on the screen to help space things out.
++ **Line 8** - run the command **echo** to check the variables have been set as intended.
++ **Line 9** - run the command **echo** this time with no arguments. This is a good way to get a blank line on the screen to help space things out.
 + **Line 11** - set another variable, this time as the path to a particular directory.
-+ **Line 13** - run the command ls substituting the value of the variable sampledir as its first command line argument.
++ **Line 13** - run the command **ls** substituting the value of the variable sampledir as its first command line argument.
 
 **Terminal**
 ```
@@ -318,8 +332,9 @@ a2ps.cfg aliases alsa.d ...
 pi@raspberry:~$ 
 ```
 
-It is important to note that in the example above we used the command echo simply because it is a convenient way to demonstrate that the variables have actually been set. echo is not needed to make use of variables and is only used when you wish to print a specific message to the screen. (Pretty much all commands print output to the screen as default so you don't need to put echo in front of them.)
+It is important to note that in the example above we used the command **echo** simply because it is a convenient way to demonstrate that the variables have actually been set. echo is not needed to make use of variables and is only used when you wish to print a specific message to the screen. (Pretty much all commands print output to the screen as default so you don't need to put echo in front of them.)
 
+**Best Practice**
 >Variables can be useful for making our scripts easier to manage. Maybe our script is going to run several commands, several of which will refer to a particular directory. Rather than type that directory out each time we can set it once in a variable then refer to that variable. Then if the required directory changes in the future we only need to update one variable rather than every instance within the script.
 
 **[Back to top](#table-of-contents)**
@@ -337,6 +352,7 @@ pi@raspberry:~$
 
 _Remember, commands work exactly the same on the command line as they do within a script._
 
+**Tip**
 >Because commands work exactly the same on the command line as in a script it can sometimes be easier to experiment on the command line.
 
 When we enclose our content in quotes we are indicating to Bash that the contents should be considered as a single item. You may use single quotes ( ' ) or double quotes ( " ).
@@ -388,9 +404,10 @@ pi@raspberry:~$
 Let's break it down:
 
 + **Line 1** - We run the command ls. Normally its output would be over several lines. I have shortened it a bit in the example above just to save space.
-+ **Line 4** - When we save the command to the variable myvar all the newlines are stripped out and the output is now all on a single line.
++ **Line 4** - When we save the command to the variable **myvar** all the newlines are stripped out and the output is now all on a single line.
 
->When playing about with command substitution it's a good idea to test your output rather than just assuming it will behave in a certain way. The easiest way to do that is simply to echo the variable and see what has happened. (You can then remove the echo command once you are happy.)
+**Tip**
+>When playing about with command substitution it's a good idea to test your output rather than just assuming it will behave in a certain way. The easiest way to do that is simply to **echo** the variable and see what has happened. (You can then remove the echo command once you are happy.)
 
 **[Back to top](#table-of-contents)**
 
@@ -398,7 +415,7 @@ Let's break it down:
 
 Remember how in the previous section we talked about scripts being run in their own process? This introduces a phenomenon known as scope which affects variables amongst other things. The idea is that variables are limited to the process they were created in. Normaly this isn't an issue but sometimes, for instance, a script may run another script as one of its commands. If we want the variable to be available to the second script then we need to export the variable.
 
-**script1.sh**
+[script1.sh](scripts/script1.sh)
 ```
 #!/bin/bash
 # demonstrate variable scope 1.
@@ -418,7 +435,7 @@ export var1
 echo $0 :: var1 : $var1, var2 : $var2
 ```
 
-**script1.sh**
+[script2.sh](scripts/script2.sh)
 ```
 #!/bin/bash
 # demonstrate variable scope 2
@@ -461,13 +478,10 @@ The first, second, etc command line arguments to the script.
 
 **variable=value**
 To set a value for a variable. Remember, no spaces on either side of =
-
 **Quotes " '**
 Double will do variable substitution, single will not.
-
 **variable=$( command )**
 Save the output of a command into a variable
-
 **export var1**
 Make the variable var1 available to child processes.
 
@@ -475,7 +489,6 @@ Make the variable var1 available to child processes.
 
 **Formatting**
 The presence or absence of spaces is important.
-
 **Manageability**
 If a particular value is used several times within a script (eg a file or directory name) then using a variable can make it easier to manage.
 
@@ -491,13 +504,13 @@ After the mammoth previous section this one is much easier to get through.
 
 ### Ask the User for Input
 
-If we would like to ask the user for input then we use a command called read. This command takes the input and will save it into a variable.
+If we would like to ask the user for input then we use a command called **read**. This command takes the input and will save it into a variable.
 
 `read var1`
 
 Let's look at a simple example:
 
-**_introduction.sh_**
+[introduction.sh](scripts/introduction.sh)
 ```
 #!/bin/bash
 # Ask the user for their name
@@ -524,13 +537,13 @@ It's nice to meet you Ryan
 pi@raspberry:~$ 
 ```
 
-+ Note: Ryan above is in italics just to show that it was something I typed in. On your terminal input will show up normally.
+**Note**: Ryan above is in italics just to show that it was something I typed in. On your terminal input will show up normally.
 
 **More with Read**
 
 You are able to alter the behaviour of **read** with a variety of command line options. (See the man page for read to see all of them.) Two commonly used options however are **-p** which allows you to specify a prompt and **-s** which makes the input silent. This can make it easy to ask for a username and password combination like the example below:
 
-**_login.sh_**
+[login.sh](scripts/login.sh)
 ```
 #!/bin/bash
 # Ask the user for login details
@@ -556,7 +569,7 @@ pi@raspberry:~$
 
 So far we have looked at a single word as input. We can do more than that however.
 
-**_cars.sh_**
+[cars.sh](scripts/cars.sh)
 ```
 #!/bin/bash
 # Demonstrate how read actually works
@@ -571,7 +584,7 @@ echo Your third car was: $car3
 ```
 
 **Terminal**
-```
+```shell
 pi@raspberry:~$ ./cars.sh
 What cars do you like?
 Jaguar Maserati Bentley
@@ -598,21 +611,21 @@ It's common in Linux to pipe a series of simple, single purpose commands togethe
 
 Bash accomodates piping and redirection by way of special files. Each process gets it's own set of files (one for STDIN, STDOUT and STDERR respectively) and they are linked when piping or redirection is invoked. Each process gets the following files:
 
-+ **STDIN** - /proc/<processID>/fd/0
-+ **STDOUT** - /proc/<processID>/fd/1
-+ **STDERR** - /proc/<processID>/fd/2
++ **STDIN** - **/proc/<processID>/fd/0**
++ **STDOUT** - **/proc/<processID>/fd/1**
++ **STDERR** - **/proc/<processID>/fd/2**
 
 To make life more convenient the system creates some shortcuts for us:
 
-+ **STDIN** - /dev/stdin or /proc/self/fd/0
-+ **STDOUT** - /dev/stdout or /proc/self/fd/1
-+ **STDERR** - /dev/stderr or /proc/self/fd/2
++ **STDIN** - **/dev/stdin** or **/proc/self/fd/0**
++ **STDOUT** - **/dev/stdout** or **/proc/self/fd/1**
++ **STDERR** - **/dev/stderr** or **/proc/self/fd/2**
 
 **fd** in the paths above stands for file descriptor.
 
 So if we would like to make our script able to process data that is piped to it all we need to do is read the relevant file. All of the files mentioned above behave like normal files.
 
-**script**
+**summary**
 ```
 #!/bin/bash
 # A basic summary of my sales report
@@ -627,7 +640,7 @@ cat /dev/stdin | cut -d' ' -f 2,3 | sort
 Let's break it down:
 
 **Lines 4, 5, 6** - Print a title for the output
-**Line 8** - cat the file representing STDIN, cut setting the delimiter to a space, fields 2 and 3 then sort the output.
+**Line 8** - cat the file representing STDIN, **cut** setting the delimiter to a space, fields 2 and 3 then sort the output.
 
 **Terminal**
 ```
@@ -662,11 +675,11 @@ Which method is best depends on the situation.
 
 You should normally favor command line arguments wherever possible. They are the most convenient for users as the data will be stored in their command history so they can easily return to it. It is also the best approach if your script may be called by other scripts or processes (eg. maybe you want it to run periodically using [CRON](https://www.linuxtotal.com.mx/index.php?cont=info_admon_006).
 
-Sometimes the nature of the data is such that it would not be ideal for it to be stored in peoples command histories etc. A good example of this is login credentials (username and password). In these circumstances it is best to read the data during script execution.
+Sometimes the nature of the data is such that it would not be ideal for it to be stored in peoples command histories etc. A good example of this is login credentials (username and password). In these circumstances it is best to **read** the data during script execution.
 
 If all the script is doing is processing data in a certain way then it is probably best to work with STDIN. This way it can easily be added into a pipeline.
 
-Sometimes you may find that a combination is ideal. The user may supply a filename as a command line argument and if not then the script will process what it finds on STDIN (when we look at If statements we'll see how this may be achieved). Or maybe command line arguments define certain behaviour but read is also used to ask for more information if required.
+Sometimes you may find that a combination is ideal. The user may supply a filename as a command line argument and if not then the script will process what it finds on STDIN (when we look at If statements we'll see how this may be achieved). Or maybe command line arguments define certain behaviour but **read** is also used to ask for more information if required.
 
 Ultimatately you should think about 3 factors when deciding how users will supply data to your Bash script:
 
@@ -682,7 +695,6 @@ Ultimatately you should think about 3 factors when deciding how users will suppl
 
 **read varName**
 Read input from the user and store it in the variable varName.
-
 **/dev/stdin**
 A file you can read to get the STDIN for the Bash script
 
@@ -712,7 +724,7 @@ The arithmetic expression can take a variety of formats which we'll outline belo
 
 Let's look at a simple example:
 
-**let_example.sh**
+[let_example.sh](scripts/let_example.sh)
 ```
 #!/bin/bash
 # Basic arithmetic using let
@@ -770,7 +782,7 @@ These operators may be used in the other mechanisms described below as well.
 
 `expr item1 operator item2`
 
-**_expr_example.sh_**
+[expr_example.sh](scripts/expr_example.sh)
 ```
 #!/bin/bash
 # Basic arithmetic using expr
@@ -853,7 +865,7 @@ Let's break it down:
 **Line 7** - As you can see, it works just the same if we take spacing out.
 **Line 10** - We may include variables without the preceding $ sign.
 **Line 13** - Variables can be included with the $ sign if you prefer.
-**Line 16** - This is a slightly different form. Here the value of the variable b is incremented by 1 (using the same mechanism illustrated under let). When we do this we don't need the $ sign preceding the brackets.
+**Line 16** - This is a slightly different form. Here the value of the variable b is incremented by 1 (using the same mechanism illustrated under **let**). When we do this we don't need the $ sign preceding the brackets.
 **Line 19** - This is a slightly different form of the previous example. Here the value of the variable b is incremented by 3. It is a shorthand for **b = b + 3**.
 **Line 19** - Unlike other methods, when we do multiplication we don't need to escape the * sign.
 
@@ -882,7 +894,7 @@ This isn't really arithmetic but it can be quite useful. If you want to find out
 
 Here's an example:
 
-**_length_example.sh_**
+[length_example.sh](scripts/length_example.sh)
 ```
 #!/bin/bash
 # Show the length of a variable.
@@ -910,13 +922,10 @@ pi@raspberry:~$
 
 **let expression**
 Make a variable equal to an expression.
-
 **expr expression**
 print out the result of the expression.
-
 **$(( expression ))**
 Return the result of the expression.
-
 **${#var}**
 Return the length of the variable var.
 
@@ -924,7 +933,6 @@ Return the length of the variable var.
 
 **Arithmetic**
 There are several ways in which to do arithmetic in Bash scripts. Double parentheses is the preferred method.
-
 **Formatting**
 When doing arithmetic, the presence or absence of spaces (and quotes) is often important.
 
@@ -942,7 +950,7 @@ Like what we have looked at in previous sections, their syntax is very specific 
 
 #### Basic If Statements
 
- basic if statement effectively says, **if** a particular test is true, then perform a given set of actions. If it is not true then don't perform those actions. If follows the format below:
+A basic if statement effectively says, **if** a particular test is true, then perform a given set of actions. If it is not true then don't perform those actions. If follows the format below:
 
 ```  
 if [ <some test> ]
@@ -955,7 +963,7 @@ Anything between **then** and **fi** (if backwards) will be executed only if the
 
 Let's look at a simple example:
 
-**_if_example.sh_**
+[if_example.sh](scripts/if_example.sh)
 ```
 #!/bin/bash
 # Basic if statement
@@ -988,13 +996,14 @@ Thu 28 Dec 17:58:45 2017
 pi@raspberry:~$ 
 ```
 
+**Tip**
 >It is always good practice to test your scripts with input that covers the different scenarios that are possible.
 
 **[Back to top](#table-of-contents)**
 
 #### Test
 
-The square brackets ( [ ] ) in the if statement above are actually a reference to the command test. This means that all of the operators that test allows may be used here as well. Look up the man page for test to see all of the possible operators (there are quite a few) but some of the more common ones are listed below.
+The square brackets ( [ ] ) in the **if** statement above are actually a reference to the command **test**. This means that all of the operators that test allows may be used here as well. Look up the man page for test to see all of the possible operators (there are quite a few) but some of the more common ones are listed below.
 
 | Operator | Description |
 | :---: | :--- |
@@ -1016,9 +1025,9 @@ The square brackets ( [ ] ) in the if statement above are actually a reference t
 
 A few points to note:
 
-+ **=** is slightly different to -eq. [ 001 = 1 ] will return false as = does a string comparison (ie. character for character the same) whereas -eq does a numerical comparison meaning [ 001 -eq 1 ] will return true.
++ **=** is slightly different to **-eq**. [ 001 = 1 ] will return false as = does a string comparison (ie. character for character the same) whereas -eq does a numerical comparison meaning [ 001 -eq 1 ] will return true.
 + When we refer to FILE above we are actually meaning a path. Remember that a path may be absolute or relative and may refer to a file or a directory.
-+ Because [ ] is just a reference to the command test we may experiment and trouble shoot with test on the command line to make sure our understanding of its behaviour is correct.
++ Because [ ] is just a reference to the command **test** we may experiment and trouble shoot with test on the command line to make sure our understanding of its behaviour is correct.
 
 **Terminal**
 ```
@@ -1042,27 +1051,27 @@ pi@raspberry:~$
 Let's break it down:
 
 **Line 1** - Perform a string based comparison. Test doesn't print the result so instead we check it's exit status which is what we will do on the next line.
-**Line 2** - The variable $? holds the exit status of the previously run command (in this case test). 0 means TRUE (or success). 1 = FALSE (or failure).
+**Line 2** - The variable **$?** holds the exit status of the previously run command (in this case test). 0 means TRUE (or success). 1 = FALSE (or failure).
 **Line 4** - This time we are performing a numerical comparison.
-**Line 7** - Create a new blank file myfile (assuming that myfile doesn't already exist).
-**Line 8** - Is the size of myfile greater than zero?
+**Line 7** - Create a new blank file **myfile** (assuming that myfile doesn't already exist).
+**Line 8** - Is the size of **myfile** greater than zero?
 **Line 11** - Redirect some content into myfile so it's size is greater than zero.
-**Line 12** - Test the size of myfile again. This time it is TRUE.
+**Line 12** - Test the size of **myfile** again. This time it is TRUE.
 
 
 **[Back to top](#table-of-contents)**
 
 #### Indenting
 
-You'll notice that in the if statement above we indented the commands that were run if the statement was true. This is referred to as indenting and is an important part of writing good, clean code (in any language, not just Bash scripts). The aim is to improve readability and make it harder for us to make simple, silly mistakes. There aren't any rules regarding indenting in Bash so you may indent or not indent however you like and your scripts will still run exactly the same. I would highly recommend you do indent your code however (especially as your scripts get larger) otherwise you will find it increasingly difficult to see the structure in your scripts.
+You'll notice that in the **if** statement above we indented the commands that were run if the statement was true. This is referred to as indenting and is an important part of writing good, clean code (in any language, not just Bash scripts). The aim is to improve readability and make it harder for us to make simple, silly mistakes. There aren't any rules regarding indenting in Bash so you may indent or not indent however you like and your scripts will still run exactly the same. I would highly recommend you do indent your code however (especially as your scripts get larger) otherwise you will find it increasingly difficult to see the structure in your scripts.
 
 **[Back to top](#table-of-contents)**
 
 #### Nested If statements
 
-Talking of indenting. Here's a perfect example of when it makes life easier for you. You may have as many if statements as necessary inside your script. It is also possible to have an if statement inside of another if statement. For example, we may want to analyse a number given on the command line like so:
+Talking of indenting. Here's a perfect example of when it makes life easier for you. You may have as many **if** statements as necessary inside your script. It is also possible to have an if statement inside of another if statement. For example, we may want to analyse a number given on the command line like so:
 
-**_nested_if.sh_**
+[nested_if.sh](scripts/nested_if.sh)
 ```
 #!/bin/bash
 # Nested if statements
@@ -1070,6 +1079,7 @@ Talking of indenting. Here's a perfect example of when it makes life easier for 
 if [ $1 -gt 100 ]
 then
   echo Hey that\'s a large number.
+
   if (( $1 % 2 == 0 ))
   then
     echo And is also an even number.
@@ -1080,16 +1090,17 @@ fi
 Let's break it down:
 
 **Line 4** - Perform the following, only if the first command line argument is greater than 100.
-**Line 8** - This is a light variation on the if statement. If we would like to check an expression then we may use the double brackets just like we did for variables.
+**Line 8** - This is a light variation on the **if** statement. If we would like to check an expression then we may use the double brackets just like we did for variables.
 **Line 10** - Only gets run if both if statements are true.
 
+**Tip**
 >You can nest as many if statements as you like but as a general rule of thumb if you need to nest more than 3 levels deep you should probably have a think about reorganising your logic.
 
 **[Back to top](#table-of-contents)**
 
 #### If Else
 
-Sometimes we want to perform a certain set of actions if a statemen is true, and another set of actions if it is false. We can accommodate this with the else mechanism.
+Sometimes we want to perform a certain set of actions if a statemen is true, and another set of actions if it is false. We can accommodate this with the **else** mechanism.
 
 ```
 if [ <some test> ]
@@ -1100,9 +1111,9 @@ else
 fi
 ```
 
-Now we could easily read from a file if it is supplied as a command line argument, else read from STDIN.
+Now we could easily read from a file if it is supplied as a command line argument, **else** read from STDIN.
 
-**_else.sh_**
+[else.sh](scripts/else.sh)
 ```
 #!/bin/bash
 # else example
@@ -1134,8 +1145,7 @@ fi
 
 For example it may be the case that if you are 18 or over you may go to the party. If you aren't but you have a letter from your parents you may go but must be back before midnight. Otherwise you cannot go.
 
-**_if_elif.sh_**
-
+[if_elif.sh](scripts/if_elif.sh)
 ```
 #!/bin/bash
 # elif statements
@@ -1164,7 +1174,7 @@ Sometimes we only want to do something if multiple conditions are met. Other tim
 
 For instance maybe we only want to perform an operation if the file is readable **and** has a size greater than zero.
 
-**_and.sh_**
+[and.sh](scripts/and.sh)
 ```
 #!/bin/bash
 # and example
@@ -1177,7 +1187,7 @@ fi
 
 Maybe we would like to perform something slightly different if the user is either bob or andy.
 
-**_or.sh_**
+[or.sh](scripts/or.sh)
 ```
 #!/bin/bash
 # or example
@@ -1194,7 +1204,7 @@ fi
 
 #### Case Statements
 
-Sometimes we may wish to take different paths based upon a variable matching a series of patterns. We could use a series of if and elif statements but that would soon grow to be unweildly. Fortunately there is a case statement which can make things cleaner. It's a little hard to explain so here are some examples to illustrate:
+Sometimes we may wish to take different paths based upon a variable matching a series of patterns. We could use a series of **if** and **elif** statements but that would soon grow to be unweildly. Fortunately there is a **case** statement which can make things cleaner. It's a little hard to explain so here are some examples to illustrate:
 
 ```
 case <variable> in
@@ -1209,8 +1219,7 @@ esac
 
 Here is a basic example:
 
-**_case.sh_**
-
+[case.sh](scripts/case.sh)
 ```
 #!/bin/bash
 # case example
@@ -1318,7 +1327,7 @@ There are 3 basic loop structures in Bash scripting which we'll look at below. T
 
 ### While Loops
 
-One of the easiest loops to work with is while loops. They say, while an expression is true, keep executing these lines of code. They have the following format:
+One of the easiest loops to work with is **while** loops. They say, while an expression is true, keep executing these lines of code. They have the following format:
 
 ```
 while [ <some test> ]
@@ -1331,6 +1340,7 @@ You'll notice that similar to if statements the test is placed between square br
 
 In the example below we will print the numbers 1 through to 10:
 
+[while_loop.sh](scripts/while_loop.sh)
 ```
 #!/bin/bash
 # Basic while loop
@@ -1370,6 +1380,7 @@ All done
 pi@raspberry:~$ 
 ```
 
+**Tip**
 >A common mistake is what's called an off by one error. In the example above we could have put -lt as opposed to -le (less than as opposed to less than or equal). Had we done this it would have printed up until 9. These mistakes are easy to make but also easy to fix once you've identified it so don't worry too much if you make this error.
 
 **[Back to top](#table-of-contents)**
@@ -1385,7 +1396,7 @@ do
 done
 ```
 
-**_until_loop.sh_**
+[until_loop.sh](scripts/until_loop.sh)
 ```
 #!/bin/bash
 # Basic until loop
@@ -1402,7 +1413,7 @@ echo All done
 
 As you can see in the example above, the syntax is almost exactly the same as the while loop (just replace while with until). We can also create a script that does exactly the same as the while example above just by changing the test accordingly.
 
-So you may be asking, 'Why bother having the two different kinds of loops?'. We don't necessarily. The while loop would be able to handle every scenario. Sometimes, however, it just makes it a little easier to read if we phrase it with until rather than while. Think about the following statement:
+So you may be asking, 'Why bother having the two different kinds of loops?'. We don't necessarily. The while loop would be able to handle every scenario. Sometimes, however, it just makes it a little easier to read if we phrase it with **until** rather than **while**. Think about the following statement:
 
 **Leave the towel on the line until it's dry.**
 
@@ -1416,6 +1427,7 @@ Or:
 
 But they just don't seem as elegant and easy to understand. So by having both while and until we can pick whichever one makes the most sense to us and as a result, end up with code that is easier for us to understand when we read it.
 
+**Tip**
 >We should always strive for clean, obvious and elegant code when writing our Bash scripts.
 
 **[Back to top](#table-of-contents)**
@@ -1437,11 +1449,11 @@ The list is defined as a series of strings, separated by spaces.
 
 Here is a simple example to illustrate:
 
-**_for_loop.sh_**
+[for_loop.sh](scripts/for_loop.sh)
 ```
 #!/bin/bash
 # Basic for loop
-# 
+
 names='Stan Kyle Cartman'
 
 for name in $names
@@ -1455,7 +1467,7 @@ echo All done
 Let's break it down:
 
 **Line 4** - Create a simple list which is a series of names.
-**Line 6** - For each of the items in the list $names assign the item to the variable $name and do the following commands.
+**Line 6** - For each of the items in the list **$names** assign the item to the variable **$name** and do the following commands.
 **Line 8** - echo the name to the screen just to show that the mechanism works. We can have as many commands here as we like.
 **Line 11** - echo another command to show that the bash script continued execution as normal after all the items in the list were processed.
 
@@ -1473,7 +1485,7 @@ pi@raspberry:~$
 
 We can also process a series of numbers
 
-**_for_loop_series.sh_**
+[for_loop_series.sh](scripts/for_loop_series.sh)
 ```
 #!/bin/bash
 # Basic range in for loop
@@ -1504,7 +1516,7 @@ When specifying a range you may specify any number you like for both the startin
 
 It is also possible to specify a value to increase or decrease by each time. You do this by adding another two dots ( .. ) and the value to step by.
 
-**_for_loop_stepping.sh_**
+[for_loop_stepping.sh](scripts/for_loop_stepping.sh)
 ```
 #!/bin/bash
 # Basic range with steps for loop
@@ -1530,10 +1542,568 @@ All done
 pi@raspberry:~$ 
 ```
 
+One of the more useful applications of **for** loops is in the processing of a set of files. To do this we may use wildcards. Let's say we want to convert a series of .html files over to .php files.
+
+[convert_html_to_php.sh](scripts/convert_html_to_php.sh)
+```
+#!/bin/bash
+# Make a php copy of any html files
+
+for value in $1/*.html
+do
+  cp $value $1/$( basename -s .html $value ).php
+done
+```
+
 **[Back to top](#table-of-contents)**
 
 ### Controlling Loops: Break and Continue
+
+Most of the time your loops are going to through in a smooth and ordely manner. Sometimes however we may need to intervene and alter their running slightly. There are two statements we may issue to do this.
+
+**Break**
+
+The **break** statement tells Bash to leave the loop straight away. It may be that there is a normal situation that should cause the loop to end but there are also exceptional situations in which it should end as well. For instance, maybe we are copying files but if the free disk space get's below a certain level we should stop copying.
+
+[copy_files.sh](scripts/copy_files.sh)
+```
+#!/bin/bash
+# Make a backup set of files
+
+for value in $1/*
+do
+  used=$( df $1 | tail -1 | awk '{ print $5 }' | sed 's/%//' )
+  if [ $used -gt 90 ]
+  then
+    echo Low disk space 1>&2
+    break
+  fi
+  cp $value $1/backup/
+done
+```
+
+**Continue**
+
+The **continue** statement tells Bash to stop running through this iteration of the loop and begin the next iteration. Sometimes there are circumstances that stop us from going any further. For instance, maybe we are using the loop to process a series of files but if we happen upon a file which we don't have the read permission for we should not try to process it.
+
+[copy_check.sh](scripts/copy_check.sh)
+```
+#!/bin/bash
+# Make a backup set of files
+
+for value in $1/*
+do
+  if [ ! -r $value ]
+  then
+    echo $value not readable 1>&2
+    continue
+  fi
+cp $value $1/backup/
+done
+```
+
 **[Back to top](#table-of-contents)**
 
 ### Select
+
+The **select** mechanism allows you to create a simple menu system. It has the following format:
+
+```
+select var in <list>
+do
+  <commands>
+done
+```
+
+When invoked it will take all the items in **list** (similar to other loops this is a space separated set of items) and present them on the screen with a number before each item. A prompt will be printed after this allowing the user to select a number. When they select a number and hit enter the corresponding item will be assigned to the variable **var** and the commands between do and done are run. Once finished a prompt will be displayed again so the user may select another option.
+
+A few points to note:
+
++ No error checking is done. If the user enters something other than a number or a number not corresponding to an item then **var** becomes null (empty)
++ If the user hits enter without entering any data then the list of options will be displayed again.
++ The loop will end when an EOF signal is entered or the break statement is issued.
++ You may change the system variable **PS3** to change the prompt that is displayed.
+
+Here is a simple example to illustrate it's usage:
+
+[select_example.sh](scripts/select_example.sh)
+```
+#!/bin/bash
+# A simple menu system
+
+names='Kyle Cartman Stan Quit'
+
+PS3='Select character: '
+
+select name in $names
+do
+  if [ $name == 'Quit' ]
+  then
+    break
+  fi
+  echo Hello $name
+done
+
+echo Bye
+```
+
+Let's break it down:
+
++ **Line 4** - Set up a variable with the list of characters and a last option which we may select to quit. Note that the items are separated by a space.
++ **Line 6** - Change the value of the system variable **PS3** so that the prompt is set to something a little more descriptive. (By default it is #?)
++ **Lines 10 - 13** - If the last option, 'Quit', is selected then **break** out of the select loop.
++ **Line 14** - Print out a message just to demonstrate the mechanism has worked. You may have as many commands here as you like.
++ **Line 17** - Print a message just to show that the script has continued as normal after the **select** loop.
+
+And now let's run the Bash script:
+
+**Terminal**
+```
+pi@raspberry:~$ ./select_example.sh
+1) Kyle     3) Stan
+2) Cartman  4) Quit
+Select character: 2
+Hello Cartman
+Select Character: 1
+Hello Kyle
+Select character: 4
+Bye
+pi@raspberry:~$ 
+```
+
 **[Back to top](#table-of-contents)**
+
+### Loops Summary
+
+**Stuff We Learng**
+
+**while do done**
+Perform a set of commands while a test is true.
+**until do done**
+Perform a set of commands until a test is true.
+**for do done**
+Perform a set of commands for each item in a list.
+**break**
+Exit the currently running loop.
+**continue**
+Stop this iteration of the loop and begin the next iteration.
+**select do done**
+Display a simple menu system for selecting items from a list.
+
+**Important Concepts**
+
+**Clarity**
+There are several Bash loop mechanisms. Pick the one which makes your code the easiest to follow.
+**Planning**
+Now that your scripts are getting a little more complex you will probably want to spend a little bit of time thinking about how you structure them before diving in.
+
+**[Back to top](#table-of-contents)**
+
+## Functions
+
+Functions in Bash Scripting are a great way to reuse code. In this section of our Bash scripting tutorial you'll learn how they work and what you can do with them.
+
+Think of a function as a small script within a script. It's a small chunk of code which you may call multiple times within your script. They are particularly useful if you have certain tasks which need to be performed several times. Instead of writing out the same code over and over you may write it once in a function then call that function every time.
+
+Creating a function is fairly easy. They may be written in two different formats:
+
+```
+function_name () {
+  <commands>
+}
+```
+
+or
+
+```
+function function_name {
+  <commands>
+}
+```
+
+A few points to note:
+
++ Either of the above methods of specifying a function is valid. Both operate the same and there is no advantage or disadvantage to one over the other. It's really just personal preference.
++ In other programming languages it is common to have arguments passed to the function listed inside **the brackets (), in Bash they are there only for decoration and you never put anything inside them.**
++ The **function definition** ( the actual function itself) **must appear in the script before any calls to the function**.
+
+Let's look at a simple example:
+
+[function_example.sh](scripts/function_example.sh)
+```
+#!/bin/bash
+# Basic function
+
+print_something () {
+  echo Hello I am a function
+}
+
+print_something
+print_something
+```
+
+Let's break it down:
+
+**Line 4** - We start defining the function by giving it a name.
+**Line 5** - Within the curly brackets we may have as many commands as we like.
+**Lines 8 and 9** - Once the function has been defined, we may call it as many times as we like and it will execute those commands.
+
+**Terminal**
+```
+pi@raspberry:~$ ./function_example.sh
+Hello I am a function
+Hello I am a function
+pi@raspberry:~$ 
+```
+
+**Best Practice**
+>You should pick function names that are descriptive. That way it is obvious what task the function serves.
+
+**Passing Arguments**
+
+It is often the case that we would like the function to process some data for us. We may send data to the function in a similar way to passing command line arguments to a script. We supply the arguments directly after the function name. Within the function they are accessible as **$1, $2, etc.**
+
+[arguments_example.sh](scripts/arguments_example.sh)
+```
+#!/bin/bash
+# Passing arguments to a function
+
+print_something () {
+  echo Hello $1
+}
+
+print_something Mars
+print_something Jupiter
+```
+
+**Terminal**
+```
+pi@raspberry:~$ ./arguments_example.sh
+Hello Mars
+Hello Jupiter
+pi@raspberry:~$ 
+```
+
+**Return Values**
+
+Most other programming languages have the concept of a return value for functions, a means for the function to send data back to the original calling location. Bash functions don't allow us to do this. They do however allow us to set a return status. Similar to how a program or command exits with an exit status which indicates whether it succeeded or not. We use the keyword **return** to indicate a return status.
+
+[return_status_example.sh](scripts/return_status_example.sh)
+```
+#!/bin/bash
+# Setting a return status for a function
+
+print_something () {
+  echo Hello $1
+  return 5
+}
+
+print_something Mars
+print_something Jupiter
+echo The previous function has a return value of $?
+```
+
+Let's break it down
+
++ **Line 6** - The return status doesn't have to be hardcoded. It may be a variable
++ **Line 11** - Remember that the variable $? contains the return status of the previously run command or function.
+
+**Terminal**
+```
+pi@raspberry:~$ ./return_status_example.sh
+Hello Mars
+Hello Jupiter
+The previous function has a return value of 5
+pi@raspberry:~$ 
+```
+
+**Tip**
+>Typically a return status of 0 indicates that everything went successfully. A non zero value indicates an error occurred.
+
+If all you want to do is return a number (eg. the result of a calculation) then you can consider using the return status to achieve this. It is not it's intended purpose but it will work.
+
+One way to get around this is to use **Command Substitution** and have the function print the result (and only the result).
+
+[return_hack.sh](scripts/return_hack.sh)
+```
+#!/bin/bash
+# Setting a return value to a function
+
+lines_in_file () {
+  cat $1 | wc -l
+}
+
+num_lines=$( lines_in_file $1 )
+
+echo The file $1 has $num_lines lines in it.
+```
+
+**Terminal**
+```
+pi@raspberry:~$ cat myfile.txt
+Tomato
+Lettuce
+Capsicum
+pi@raspberry:~$ ./return_hack.sh myfile.txt
+The file myfile.txt has 3 lines in it.
+pi@raspberry:~$ 
+```
+
+Just be wary if you take this approach as if you don't call the function with command substitution then it will print the result to the screen. Sometimes that is ok because that is what you want. Other times that may be undesireable.
+
+**[Back to top](#table-of-contents)**
+
+### Variable Scope
+
+Scope refers to which parts of a script can see which variables. By default a variable is **global**. This means that it is visible everywhere in the script. **We may also create a variable as a local variable**. When we create a local variable within a function, it is only visible within that function. To do that we use the keyword local in front of the variable the first time we set it's value.
+
+```
+local var_name=<var_value>
+```
+
+It is generally considered good practice to use local variables within functions so as to keep everything within the function contained. This way variables are safer from being inadvertently modified by another part of the script which happens to have a variable with the same name (or vice versa)
+
+[local_variables.sh](scripts/local_variables.sh)
+```
+#!/bin/bash
+# Experimenting with variable scope
+
+var_change () {
+  local var1='local 1'
+  echo Inside function: var1 is $var1 : var2 is $var2
+  var1='changed again'
+  var2='2 changed again'
+}
+
+var1='global 1'
+var2='global 2'
+
+echo Before function call: var1 is $var1 : var2 is $var2
+
+var_change
+
+echo After function call: var1 is $var1 : var2 is $var2
+```
+
+**Terminal**
+```
+pi@raspberry:~$ ./local_variables.sh
+Before function call: var1 is global 1 : var2 is global 2
+Inside function: var1 is local 1 : var2 is global 2
+After function call: var1 is global 1 : var2 is 2 changed again
+pi@raspberry:~$ 
+```
+
+**Best Practice**
+>Always use local variables within functions. Use global variables as a last resort and consider if there is a better way to do it before using them.
+
+Scope can sometimes be hard to get your head around at first. If it seems a bit confusing, the best approach is to create a Bash script similar to the one above and tweak it several times setting and changing variables in different places then observing the behaviour when you run it.
+
+**[Back to top](#table-of-contents)**
+
+### Overriding Commands
+
+It is possible to name a function as the same name as a command you would normally use on the command line. This allows us to create a wrapper. eg. Maybe every time we call the command ls in our script, what we actually want is **ls -lh**. We could do the following:
+
+[override.sh](scripts/override.sh)
+```
+#!/bin/bash
+# Create a wrapper around the command ls
+
+ls () {
+  command ls -lh
+}
+
+ls
+```
+
+Let's break it down:
+
++ **Line 5** - When we have a function with the same name as a command we need to put the keyword command in front of the the name when we want the command as opposed to the function as the function normally takes precedence.
+
+In the example above, if we didn't put the keyword **command** in front of ls on line 5 we would end up in an endless loop. Even though we are inside the function ls when we call ls it would have called another instance of the function ls which in turn would have done the same and so on.
+
+**Tip**
+>It's easy to forget the **command** keyword and end up in an endless loop. If you encounter this then you can cancel the script from running by pressing the keys **CTRL+C** at the same time on your keyboard. **CTRL+C** is a good way to cancel your script (or a program) whenever you get into trouble on the command line.
+
+**[Back to top](#table-of-contents)**
+
+### Design
+
+Creating functions in your Bash scripts is easy. Creating good functions that make your scripts easier to write and maintain takes time and experience however. As with most things with computers when you get to this level of complexity, there will be several ways you could achieve the desired outcome. Some will be better than others so take the time to think about different ways you could write your code and which way may be better.
+
+Sometimes better is least lines of code, sometimes better is easiest to modify later if requirements change. Sometimes better is the approach which is least prone to errors.
+
+If a particular task needs to be performed several times then it is a good candidate for placing within a function.
+
+Sometimes it is good to put ancilliary tasks within functions too so that they are logically separate from the main part of the script. A common example is validating input (eg. making sure a specified file exists and is readable).
+
+A function is most reuseable when it performs a single task and a single task only. Instead of having a large function, consider breaking it up into several functions and breaking the task up.
+
+You need to find the right balance however. If the functions are too large and take on too much processing then you don't get the full benefit. If you divide up into too many functions then your code can easily grow and become silly. With experience you will find that sweet spot in the middle.
+
+**[Back to top](#table-of-contents)**
+
+### Functions Summary
+
+**Stuff We Learnt**
+
+**function <name> or <name> ()**
+Create a function called name.
+**return <value>**
+Exit the function with a return status of value.
+**local <name>=<value>**
+Create a local variable within a function.
+**command <command>**
+Run the command with that name as opposed to the function with the same name.
+
+**Important Concepts**
+
+**Re-use**
+Functions allow us to easily re-use code making the code easier to manage and read.
+**Planning**
+Now that your scripts are getting a little more complex you will probably want to spend a little bit of time thinking about how you structure them before diving in.
+
+**[Back to top](#table-of-contents)**
+
+### User Interface
+
+This is the final section in the tutorial and I'd like to use it to discuss a very important topic (which is often neglected) the user interface. I've touched on various points regarding the user interface throughout the tutorial but here I'll bring them all together and introduce a few other concepts as well.
+
+When most people think about the user interface they think about the bits the end user sees and how they interact with the tool. For Bash scripts I like to think about the layout and structure of the commands inside the script as well. Bash scripts are often small tools used to automate tedious and repetitive tasks. They are always readable by the end user and often modified to suit changing requirements. Therefore the ease with which the user (often yourself) may modify and extend the script is also very important.
+
+**[Back to top](#table-of-contents)**
+
+### TPut
+
+tput is a command which allows you to control the cursor on the terminal and the format of content that is printed. It is quite a powerful and complex tool so I'll introduce some of the basics here but leave it up to you to do further research.
+
+Here is an example printing a message in the center of the screen.
+
+[center_message.sh](scripts/center_message.sh)
+```
+#!/bin/bash
+# Print message in center of terminal
+
+cols=$( tput cols )
+rows=$( tput lines )
+
+message=$@
+
+input_length=${#message}
+
+half_input_length=$(( $input_length / 2 ))
+
+middle_row=$(( $rows / 2 ))
+middle_col=$(( ($cols / 2) - $half_input_length ))
+
+tput clear
+
+tput cup $middle_row $middle_col
+tput bold
+echo $@
+tput sgr0
+tput cup $( tput lines ) 0
+```
+
+Let's break it down:
+
++ **Line 4** - **tput cols** will tell us how many columns the terminal has.
++ **Line 5** - **tput lines** will tell us how many lines (or rows) the terminal has.
++ **Line 7** - Take all the command line arguments and assign them to a single variable **message**.
++ **Line 9** - Find out how many characters are in the string **message**. We had to assign all the input values to the variable **message** first as ${#@} would tell us how many command line arguments there were instead of the number of characters combined.
++ **Line 11** - We need to know what 1/2 the length of the string **message** is in order to center it.
++ **Lines 13 and 14** - Calculate where to place the message for it to be centered.
++ **Line 16** - **tput clear** will clear the terminal.
++ **Line 18** - **tput cup** will place the cursor at the given row and column.
++ **Line 19** - **tput bold** will make everything printed to the screen bold.
++ **Line 20** - Now we have everything set up let's print our message.
++ **Line 21** - **tput sgr0** will turn bold off (and any other changes we may have made).
++ **Line 22** - Place the prompt at the bottom of the screen.
+
+**Terminal**
+```
+pi@raspberry:~$ ./center_message.sh Hello there
+
+
+
+                          Hello there
+
+
+
+pi@raspberry:~$ 
+```
+
+**Note:** Normally the first prompt (where we run the script) would be removed with the clear command. We have left it here only so you can see that it was run to get the script started.
+
+With **tput** and a bit of creativity you can create some really interesting effects. Especially so if you delay actions using the command **sleep**. Only use it when appropriate however. Most of the time just printing the processed data (without formatting) is more convenient for the user.
+
+**[Back to top](#table-of-contents)**
+
+### Supplying Data
+
+Remember there are 3 ways in which you may supply data to a Bash script:
+
++ As command line arguments
++ Redirected in as STDIN
++ Read interactively during script execution
+
+Your script may use one or a combination of these but should always aim to be the most convenient for the user.
+
+Command line arguments are good as they will be retained in the users history making it easy for them to rerun commands. Command line arguments are also convenient when the script is not run directly by the user (eg, as part of another script or a cron task etc).
+
+Redirected from STDIN is good when your script is behaving like a filter and just modifying or reformatting data that is fed to it.
+
+Reading interactively is good when you don't know what data may be required until the script is already running. eg. You may need to clarify some suspicious or erroneous input. Passwords are also ideally asked for this way so they aren't kept as plain text in the users history.
+
+**Input Flexibility**
+
+Think about how strict you are going to be with supplied data as well. The more flexible you can be the happier the end user is going to be. Think of someone supplying a date as an argument. They could supply the date as:
+
+**04-01-2018**
+
+or
+
+**04/01/2018**
+
+or
+
+**04:01:2018**
+
+We could write our script to insist on input in only one particular format. This would be easiest for us but potentially not convenient for the end user. What if they want to feed the date in as provided from another command or source that provides it in a different format?
+
+We should always aim to be most convenient for the end user as oposed to ourselves. After all, we'll write it once but they will run it many times.
+
+The command sed can easily allow us to accommodate many formats for input data.
+
+[flexible_date.sh](scripts/flexible_date.sh)
+```
+#!/bin/bash
+# A date is the first command line argument
+
+clean_date=$( echo $1 | sed 's/[ /:\^#]/-/g' )
+
+echo $clean_date
+```
+
+**[Back to top](#table-of-contents)**
+
+### Presenting Data
+
+Remember that the terminal and the nature of the commands you use there are typically a little different to your normal interaction with computers in a graphical user interface. Again we want what is most convenient for the user. Often this is just to print the output as a plain result, without any formatting or fancy messages surrounding it. Then it is easiest for the user to redirect the output into other commands for further processing or to a file for saving.
+
+**[Back to top](#table-of-contents)**
+
+### Organising Your Code
+
+Presentation of your code is very important and you should take pride in it. Good structure makes it easier for you to see what the code is doing and harder to make silly mistakes (which can easily waste a lot of time or potentially worse if you don't realise the mistake).
+
+It's common to take the approach of 'yeah yeah, that's other people though, I don't make those silly mistakes so I can be lazy and write sloppy code and it'll be fine.' Everyone can make mistakes, even [NASA](https://en.wikipedia.org/wiki/Mars_Climate_Orbiter#Cause_of_failure). Take the time to structure your code well and later on you'll be thankful you did.
+
++ Indent your code and space it out well so that different sections are easily distinguished.
++ Name variables and functions with descriptive names so it is clear what they represent and do.
++ Use comments where appropriate to explain a bit of code who's operation is not immediately obvious.
+
+**[Back to top](#table-of-contents)**
+
+

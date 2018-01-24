@@ -1,6 +1,6 @@
 #!/bin/bash
 # Basic for loop
-# 
+
 names='Stan Kyle Cartman'
 
 for name in $names
