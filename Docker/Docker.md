@@ -19,7 +19,7 @@ $ docker-machine version
 $ docker <COMMAND> --help
 ```  
 
-### Containers
+### Containers
 
 ###### create a container
 ```shell
@@ -379,7 +379,7 @@ $ docker-machine status docker-local
 $ docker-machine url docker-local
 ```
 
-### Docker Composer
+### Docker Composer
 
 ###### Docker Compose Example File
 ```yaml
